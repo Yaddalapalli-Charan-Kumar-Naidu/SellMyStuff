@@ -19,6 +19,9 @@ export default function Index() {
       <Link href="screens/ListingDetailsScreen">
         <Text>Go to listing details screen</Text>
       </Link>
+      <Link href="screens/AccountScreen">
+        <Text>Go to listing details screen</Text>
+      </Link>
     </View>
   );
 }
