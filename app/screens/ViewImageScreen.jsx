@@ -1,6 +1,7 @@
 import { View, Text, Image, StyleSheet } from 'react-native';
 import React from 'react';
 
+import colors from "../constants/colors";
 const ViewImageScreen = () => {
   return (
     <View style={styles.container}>
@@ -43,20 +44,20 @@ const styles = StyleSheet.create({
   red: {
     width: 50,
     height: 50,
-    backgroundColor: 'red',
+    backgroundColor: colors.primary,
     justifyContent: 'center',
     alignItems: 'center',
   },
   green: {
     width: 50,
     height: 50,
-    backgroundColor: 'green',
+    backgroundColor:colors.secondary,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 20,
   },
   text: {
-    color: 'white',
+    color: colors.white,
     fontWeight: 'bold',
   },
 });

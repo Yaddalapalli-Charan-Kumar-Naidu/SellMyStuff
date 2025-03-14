@@ -10,6 +10,15 @@ export default function Index() {
       <Link href="screens/ViewImageScreen">
         <Text>Go to View image screen</Text>
       </Link>
+      <Link href="screens/ListingScreen">
+        <Text>Go to Listing screen</Text>
+      </Link>
+      <Link href="screens/MessageScreen">
+        <Text>Go to Message screen</Text>
+      </Link>
+      <Link href="screens/ListingDetailsScreen">
+        <Text>Go to listing details screen</Text>
+      </Link>
     </View>
   );
 }

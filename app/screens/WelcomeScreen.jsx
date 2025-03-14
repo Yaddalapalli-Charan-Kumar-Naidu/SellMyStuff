@@ -1,6 +1,8 @@
 import { View, Text, ImageBackground, StyleSheet, Image } from "react-native";
 import React from "react";
 
+
+import colors from "../constants/colors";
 const WelcomeScreen = () => {
   return (
     <View style={styles.container}>
@@ -17,8 +19,8 @@ const WelcomeScreen = () => {
                 <Text style={styles.text}>Sell What You Don't Need</Text>
             </View>
             <View>
-                <View style={styles.login}></View>
-                <View style={styles.signup}></View>
+                <View style={styles.login}><Text>Login</Text></View>
+                <View style={styles.signup}><Text>Register</Text></View>
             </View>
         </View>
       </ImageBackground>
@@ -42,7 +44,7 @@ const styles = StyleSheet.create({
     alignItems: "center", // Align children components to the center
   },    
   text: {
-    color: "black",
+    color: colors.black,
     fontSize: 20,
     marginBottom: 20,
     textAlign: "center", // Center-align the text
@@ -57,13 +59,13 @@ const styles = StyleSheet.create({
   login: {
     width: "100%",
     height: 70,
-    backgroundColor: "red",
+    backgroundColor: colors.primary,
     marginBottom: 10, // Add space between buttons
   },
   signup: {
     width: "100%",
     height: 70,
-    backgroundColor: "green",
+    backgroundColor: colors.secondary,
   },
 });
 
