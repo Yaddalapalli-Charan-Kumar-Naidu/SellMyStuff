@@ -1,7 +1,6 @@
 import { View, Text, ImageBackground, StyleSheet, TextInput, TouchableOpacity } from "react-native";
 import React from "react";
 import colors from "../constants/colors";
-import { LinearGradient } from "expo-linear-gradient";
 import { MaterialIcons } from "@expo/vector-icons";
 
 const RegisterScreen = ({ navigation }) => {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -13,9 +13,11 @@ import {
   KeyboardAvoidingView,
   Platform,
   TouchableWithoutFeedback,
+  Image,
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import colors from "../constants/colors";
+import * as ImagePicker from "expo-image-picker";
 
 const categories = [
   { label: "Electronics", value: "electronics", icon: "tv" },
@@ -31,6 +33,17 @@ const AddProductScreen = () => {
   const [selectedCategory, setSelectedCategory] = useState(categories[0]);
   const [isModalVisible, setModalVisible] = useState(false);
   const [errors, setErrors] = useState({});
+  const [images, setImages] = useState([]);
+
+  // Request permissions on component mount
+  useEffect(() => {
+    (async () => {
+      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (status !== "granted") {
+        Alert.alert("Permission required", "We need access to your photo library to upload images.");
+      }
+    })();
+  }, []);
 
   const validateForm = () => {
     const newErrors = {};
@@ -49,10 +62,37 @@ const AddProductScreen = () => {
       productName,
       price,
       category: selectedCategory.value,
+      images,
     });
     // Add logic to post to backend or Firebase here
 
     Alert.alert("Success", "Product added successfully!");
+  };
+
+  const handleImageUpload = async () => {
+    console.log("Image upload button clicked"); // Debugging log
+
+    try {
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+        allowsMultipleSelection: true, // Allow multiple image selection
+      });
+
+      console.log("Image picker result:", result); // Debugging log
+
+      if (!result.canceled) {
+        const newImages = result.assets.map((asset) => asset.uri);
+        setImages((prevImages) => [...prevImages, ...newImages]);
+      } else {
+        console.log("User cancelled image picker");
+      }
+    } catch (error) {
+      console.log("ImagePicker Error:", error);
+      Alert.alert("ImagePicker Error", error.message);
+    }
   };
 
   const renderCategoryItem = ({ item }) => (
@@ -77,15 +117,28 @@ const AddProductScreen = () => {
 
   return (
     <KeyboardAvoidingView
-  style={{ flex: 1 }}
-  behavior={Platform.OS === "ios" ? "padding" : undefined}
-  keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0} // adjust if needed
->
-  <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-    <ScrollView
-      contentContainerStyle={styles.container}
-      keyboardShouldPersistTaps="handled"
+      style={{ flex: 1 }}
+      behavior={Platform.OS === "ios" ? "padding" : undefined}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0} // Adjust if needed
     >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <ScrollView
+          contentContainerStyle={styles.container}
+          keyboardShouldPersistTaps="handled"
+        >
+          {/* Image Upload Section */}
+          <View style={styles.imageUploadContainer}>
+            <TouchableOpacity style={styles.imageUploadButton} onPress={handleImageUpload}>
+              <Icon name="plus" size={40} color={colors.primary} />
+              <Text style={styles.imageUploadText}>Add Photos</Text>
+            </TouchableOpacity>
+            <View style={styles.imagePreviewContainer}>
+              {images.map((uri, index) => (
+                <Image key={index} source={{ uri }} style={styles.imagePreview} />
+              ))}
+            </View>
+          </View>
+
           <Text style={styles.heading}>Add New Product</Text>
 
           <TextInput
@@ -136,9 +189,9 @@ const AddProductScreen = () => {
           <TouchableOpacity style={styles.button} onPress={handleAddProduct}>
             <Text style={styles.buttonText}>Add Product</Text>
           </TouchableOpacity>
-          </ScrollView>
-  </TouchableWithoutFeedback>
-</KeyboardAvoidingView>
+        </ScrollView>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -148,6 +201,36 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     justifyContent: "center",
     flex: 1,
+  },
+  imageUploadContainer: {
+    alignItems: "center",
+    marginBottom: 20,
+  },
+  imageUploadButton: {
+    width: 120,
+    height: 120,
+    justifyContent: "center",
+    alignItems: "center",
+    borderWidth: 2,
+    borderColor: colors.primary,
+    borderRadius: 10,
+    borderStyle: "dashed",
+  },
+  imageUploadText: {
+    marginTop: 10,
+    color: colors.primary,
+    fontSize: 16,
+  },
+  imagePreviewContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    marginTop: 10,
+  },
+  imagePreview: {
+    width: 80,
+    height: 80,
+    borderRadius: 10,
+    margin: 5,
   },
   heading: {
     fontSize: 24,
