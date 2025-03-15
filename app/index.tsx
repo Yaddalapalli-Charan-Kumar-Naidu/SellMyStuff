@@ -27,6 +27,9 @@ export default function Index() {
       </Link><Link href="screens/RegisterScreen">
         <Text>Go to register screen</Text>
       </Link>
+      <Link href="screens/AddProductScreen">
+        <Text>Go to add product screen</Text>
+      </Link>
     </View>
   );
 }
