@@ -20,7 +20,12 @@ export default function Index() {
         <Text>Go to listing details screen</Text>
       </Link>
       <Link href="screens/AccountScreen">
-        <Text>Go to listing details screen</Text>
+        <Text>Go to account screen</Text>
+      </Link>
+      <Link href="screens/LoginScreen">
+        <Text>Go to login screen</Text>
+      </Link><Link href="screens/RegisterScreen">
+        <Text>Go to register screen</Text>
       </Link>
     </View>
   );
